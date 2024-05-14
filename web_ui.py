@@ -27,7 +27,7 @@ def load_model_and_tokenizer():
 def process_text(input_text, model, tokenizer):
     # 实现处理文本的逻辑，包括使用tokenizer进行编码等
     encoded_inputs = tokenizer(input_text, padding=True, truncation=True, return_tensors="pt")
-    encoded_inputs={k: v.cuda() for k, v in encoded_inputs.items()}
+    # encoded_inputs={k: v.cuda() for k, v in encoded_inputs.items()}
     # 使用模型进行推理
     with torch.no_grad():
         outputs = model(**encoded_inputs)
@@ -49,7 +49,7 @@ def process_csv(uploaded_file, model, tokenizer):
         input_text=df.loc[i, 'new_content']
         with torch.no_grad():
             inputs = tokenizer(input_text, truncation=True, padding='max_length', max_length=512, return_tensors="pt")
-            inputs = {k: v.cuda() for k, v in inputs.items()}
+            #inputs = {k: v.cuda() for k, v in inputs.items()}
             logits = model(**inputs).logits
             pred = torch.argmax(logits, dim=-1)
             df.loc[i, 'preLabel']=pred.item()
